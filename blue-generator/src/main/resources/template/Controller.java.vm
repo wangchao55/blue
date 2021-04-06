@@ -3,8 +3,8 @@ package ${package}.${moduleName}.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.sky.cold.rest.responses.SuccessResponses;
-import com.sky.cold.rest.controller.SuperController;
+import com.sky.cold.common.rest.responses.SuccessResponses;
+import com.sky.cold.common.rest.controller.SuperController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.sky.cold.config.MybatisPlusAutoConfiguration
+  com.sky.cold.common.config.MybatisPlusAutoConfiguration
