@@ -1,4 +1,4 @@
-package com.sky.cold.admin.controller;
+package com.sky.cold.controller;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import com.sky.cold.admin.entity.Role;
-import com.sky.cold.admin.service.RoleService;
+import com.sky.cold.entity.Role;
+import com.sky.cold.service.RoleService;
 
 
 

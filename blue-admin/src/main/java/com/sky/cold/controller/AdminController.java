@@ -1,7 +1,7 @@
-package com.sky.cold.admin.controller;
+package com.sky.cold.controller;
 
-import com.sky.cold.admin.entity.Admin;
-import com.sky.cold.admin.service.AdminService;
+import com.sky.cold.entity.Admin;
+import com.sky.cold.service.AdminService;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.security.util.SecurityUtil;
@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -106,11 +107,11 @@ public class AdminController extends SuperController {
     /**
      * 获取用户信息
      */
-    /*@ApiOperation(value = "通过id获取该用户信息")
+    @ApiOperation(value = "通过id获取该用户信息")
     @GetMapping("/getUserInfo/{id}")
-    public SuccessResponses<Admin> getUserInfo(@PathVariable("id") Long id){
+    public SuccessResponses<Admin> getUserInfo(@NotNull(message = "id不能为空") @PathVariable("id") Long id){
         return success(adminService.getUserInfo(id));
-    }*/
+    }
 
     /**
      * 修改

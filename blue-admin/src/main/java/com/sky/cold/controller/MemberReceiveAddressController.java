@@ -1,4 +1,4 @@
-package com.sky.cold.admin.controller;
+package com.sky.cold.controller;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import com.sky.cold.admin.entity.MemberReceiveAddress;
-import com.sky.cold.admin.service.MemberReceiveAddressService;
+import com.sky.cold.entity.MemberReceiveAddress;
+import com.sky.cold.service.MemberReceiveAddressService;
 
 
 

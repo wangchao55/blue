@@ -1,10 +1,10 @@
-package com.sky.cold.admin.service.impl;
+package com.sky.cold.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.cold.admin.dao.GrowthChangeHistoryDao;
-import com.sky.cold.admin.entity.GrowthChangeHistory;
-import com.sky.cold.admin.service.GrowthChangeHistoryService;
+import com.sky.cold.dao.GrowthChangeHistoryDao;
+import com.sky.cold.entity.GrowthChangeHistory;
+import com.sky.cold.service.GrowthChangeHistoryService;
 
 
 @Service("growthChangeHistoryService")

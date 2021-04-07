@@ -1,6 +1,6 @@
 package com.sky.cold.cache.service;
 
-import com.sky.cold.admin.entity.Admin;
+import com.sky.cold.entity.Admin;
 
 /**
  * @Author: wangchao

@@ -1,6 +1,6 @@
-package com.sky.cold.admin.bo;
+package com.sky.cold.bo;
 
-import com.sky.cold.admin.entity.Admin;
+import com.sky.cold.entity.Admin;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

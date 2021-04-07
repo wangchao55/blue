@@ -1,6 +1,6 @@
-package com.sky.cold.admin.dao;
+package com.sky.cold.dao;
 
-import com.sky.cold.admin.entity.RolePermissionRelation;
+import com.sky.cold.entity.RolePermissionRelation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

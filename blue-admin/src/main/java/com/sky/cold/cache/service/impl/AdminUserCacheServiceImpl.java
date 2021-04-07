@@ -1,6 +1,6 @@
 package com.sky.cold.cache.service.impl;
 
-import com.sky.cold.admin.entity.Admin;
+import com.sky.cold.entity.Admin;
 import com.sky.cold.cache.service.AdminUserCacheService;
 import com.sky.cold.common.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;

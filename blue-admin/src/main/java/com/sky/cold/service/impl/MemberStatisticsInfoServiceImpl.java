@@ -1,10 +1,10 @@
-package com.sky.cold.admin.service.impl;
+package com.sky.cold.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.cold.admin.dao.MemberStatisticsInfoDao;
-import com.sky.cold.admin.entity.MemberStatisticsInfo;
-import com.sky.cold.admin.service.MemberStatisticsInfoService;
+import com.sky.cold.dao.MemberStatisticsInfoDao;
+import com.sky.cold.entity.MemberStatisticsInfo;
+import com.sky.cold.service.MemberStatisticsInfoService;
 
 
 @Service("memberStatisticsInfoService")

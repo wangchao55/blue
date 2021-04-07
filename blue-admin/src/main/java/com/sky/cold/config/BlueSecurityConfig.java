@@ -1,8 +1,8 @@
-package com.sky.cold.admin.config;
+package com.sky.cold.config;
 
-import com.sky.cold.admin.service.AdminService;
 import com.sky.cold.security.component.DynamicSecurityService;
 import com.sky.cold.security.config.SecurityConfig;
+import com.sky.cold.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

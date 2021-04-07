@@ -1,7 +1,7 @@
-package com.sky.cold.admin.service;
+package com.sky.cold.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sky.cold.admin.entity.MemberReceiveAddress;
+import com.sky.cold.entity.MemberReceiveAddress;
 
 
 /**

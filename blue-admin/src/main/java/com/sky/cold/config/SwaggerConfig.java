@@ -1,4 +1,4 @@
-package com.sky.cold.admin.config;
+package com.sky.cold.config;
 
 
 import com.sky.cold.common.config.BaseSwaggerConfig;
@@ -17,7 +17,7 @@ public class SwaggerConfig extends BaseSwaggerConfig {
     @Override
     public SwaggerProperties swaggerProperties() {
         return SwaggerProperties.builder()
-                .apiBasePackage("com.sky.cold.admin.controller")
+                .apiBasePackage("com.sky.cold.controller")
                 .title("blue后台系统")
                 .description("blue后台相关接口文档")
                 .contactName("wangchao")

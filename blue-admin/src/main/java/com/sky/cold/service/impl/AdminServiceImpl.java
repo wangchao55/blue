@@ -2,10 +2,10 @@ package com.sky.cold.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.cold.admin.bo.AdminUserDetails;
-import com.sky.cold.admin.dao.AdminDao;
-import com.sky.cold.admin.entity.Admin;
-import com.sky.cold.admin.service.AdminService;
+import com.sky.cold.bo.AdminUserDetails;
+import com.sky.cold.dao.AdminDao;
+import com.sky.cold.entity.Admin;
+import com.sky.cold.service.AdminService;
 import com.sky.cold.cache.service.AdminUserCacheService;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.security.util.JWTTokenUtil;
@@ -130,5 +130,15 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
         map.put("token",refreshHeadToken);
         map.put("tokenHead",tokenHead);
         return map;
+    }
+
+    /**
+     * 通过id获取用户基本信息
+     */
+    @Override
+    public Admin getUserInfo(Long id) {
+        Admin admin = new Admin().selectById(id);
+        ApiAssert.notNull(ErrorCodeEnum.USER_NOT_FOUND,admin);
+        return admin;
     }
 }

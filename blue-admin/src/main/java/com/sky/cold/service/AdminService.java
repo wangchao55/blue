@@ -1,8 +1,7 @@
-package com.sky.cold.admin.service;
+package com.sky.cold.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sky.cold.admin.entity.Admin;
-import org.springframework.http.HttpStatus;
+import com.sky.cold.entity.Admin;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Map;
@@ -33,6 +32,11 @@ public interface AdminService extends IService<Admin> {
      */
     Admin getAdminUserInfoByUserName(String userName);
 
-    Map<String,Object> refreshToken(String header);
+    Map<String,Object> refreshToken(String token);
+
+    /**
+     * 通过id获取用户名称
+     */
+    Admin getUserInfo(Long id);
 }
 

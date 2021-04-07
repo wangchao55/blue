@@ -1,6 +1,6 @@
-package com.sky.cold.admin.dao;
+package com.sky.cold.dao;
 
-import com.sky.cold.admin.entity.IntegrationConsumeSetting;
+import com.sky.cold.entity.IntegrationConsumeSetting;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

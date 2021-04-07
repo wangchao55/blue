@@ -1,10 +1,10 @@
-package com.sky.cold.admin.service.impl;
+package com.sky.cold.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.cold.admin.dao.MemberProductCategoryRelationDao;
-import com.sky.cold.admin.entity.MemberProductCategoryRelation;
-import com.sky.cold.admin.service.MemberProductCategoryRelationService;
+import com.sky.cold.dao.MemberProductCategoryRelationDao;
+import com.sky.cold.entity.MemberProductCategoryRelation;
+import com.sky.cold.service.MemberProductCategoryRelationService;
 
 
 @Service("memberProductCategoryRelationService")

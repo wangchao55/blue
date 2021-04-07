@@ -1,10 +1,10 @@
-package com.sky.cold.admin.service.impl;
+package com.sky.cold.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.cold.admin.dao.AdminRoleRelationDao;
-import com.sky.cold.admin.entity.AdminRoleRelation;
-import com.sky.cold.admin.service.AdminRoleRelationService;
+import com.sky.cold.dao.AdminRoleRelationDao;
+import com.sky.cold.entity.AdminRoleRelation;
+import com.sky.cold.service.AdminRoleRelationService;
 
 
 @Service("adminRoleRelationService")

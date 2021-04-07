@@ -1,10 +1,10 @@
-package com.sky.cold.admin.service.impl;
+package com.sky.cold.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.cold.admin.dao.MenuDao;
-import com.sky.cold.admin.entity.Menu;
-import com.sky.cold.admin.service.MenuService;
+import com.sky.cold.dao.MenuDao;
+import com.sky.cold.entity.Menu;
+import com.sky.cold.service.MenuService;
 
 
 @Service("menuService")
