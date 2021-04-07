@@ -16,12 +16,12 @@ spring:
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
-    - classpath*:com/**/mapper/**/*.xml
+    - classpath*:com/**/mapper/*.xml
 
 # mybatis-plus 配置
 mybatis-plus:
   tenant-enable: ture
-  mapper-locations: classpath:/mapper/**/*.xml
+  mapper-locations: classpath:/mapper/*.xml
   global-config:
     banner: false
     db-config:

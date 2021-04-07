@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * 用户无权限访问
@@ -23,7 +24,10 @@ public class UserAuthAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse.setHeader("Cache-Control","no-cache");
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.getWriter().println(JSONUtil.parse("未授权"));
+        HashMap<Object, Object> map = new HashMap<>(16);
+        map.put("message","未授权");
+        map.put("code","401");
+        httpServletResponse.getWriter().println(JSONUtil.parse(map));
         httpServletResponse.getWriter().flush();
     }
 }

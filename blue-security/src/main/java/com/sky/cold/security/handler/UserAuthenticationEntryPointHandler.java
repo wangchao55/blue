@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * 用户未登录
@@ -24,7 +25,10 @@ public class UserAuthenticationEntryPointHandler implements AuthenticationEntryP
         httpServletResponse.setHeader("Cache-Control","no-cache");
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.getWriter().println(JSONUtil.parse("未登录"));
+        HashMap<Object, Object> map = new HashMap<>(16);
+        map.put("message","未登录");
+        map.put("code","401");
+        httpServletResponse.getWriter().println(JSONUtil.parse(map));
         httpServletResponse.getWriter().flush();
     }
 }
