@@ -1,9 +1,12 @@
 package com.sky.cold.security.util;
 
+import com.sky.cold.common.enums.ErrorCodeEnum;
+import com.sky.cold.common.exception.ApiException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+
+import java.security.Principal;
 
 /**
  * @Author: wangchao
@@ -16,29 +19,33 @@ public class SecurityUtil {
      * 获取Authentication
      */
     public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    /**
-     * 获取用户信息
-     */
-    public User getUser() {
-        Authentication authentication = getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            return null;
+            throw new ApiException(ErrorCodeEnum.UNAUTHORIZED);
         }
-        return getUser(authentication);
+        return authentication;
+    }
+
+    /**
+     * 从Authentication获取用户名称
+     */
+    public String getUser() {
+        return getUser(getAuthentication());
+    }
+
+    /**
+     * 获取用户名称
+     */
+    public String getUser(Authentication authentication) {
+        Principal principal = (Principal) authentication.getPrincipal();
+        return principal.getName();
     }
 
     /**
      * 获取用户信息
      */
-    public User getUser(Authentication authentication) {
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof User) {
-            return (User) principal;
-        }
-        return null;
+    public Principal getUserInfo() {
+        return (Principal) getAuthentication().getPrincipal();
     }
 
     /**

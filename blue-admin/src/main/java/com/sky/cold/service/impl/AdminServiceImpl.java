@@ -10,6 +10,8 @@ import com.sky.cold.cache.service.AdminUserCacheService;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.security.util.JWTTokenUtil;
 import com.sky.cold.common.util.ApiAssert;
+import com.sun.corba.se.impl.oa.toa.TOA;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,8 +84,13 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
             //用户名和密码验证
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            //生成token
-            token = jwtTokenUtil.generateToken(userDetails);
+            token = adminUserCacheService.getAdminToken(userDetails.getUsername());
+            if(StringUtils.isEmpty(token)){
+                //生成token
+                token = jwtTokenUtil.generateToken(userDetails);
+                //存入缓存
+                adminUserCacheService.saveAdminToken(userDetails.getUsername(),token);
+            }
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
         }
@@ -140,5 +147,14 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
         Admin admin = new Admin().selectById(id);
         ApiAssert.notNull(ErrorCodeEnum.USER_NOT_FOUND,admin);
         return admin;
+    }
+
+    /**
+     * 退出登录
+     */
+    @Override
+    public Void logout(String userName) {
+        //清空缓存
+        return adminUserCacheService.delAdminToken(userName);
     }
 }

@@ -54,7 +54,7 @@ public class AdminController extends SuperController {
     @ApiOperation(value = "获取用户信息")
     @GetMapping("/getAdminUserInfo")
     public SuccessResponses<Admin> getAdminUserInfo(){
-        return success(adminService.getAdminUserInfoByUserName(securityUtil.getUser().getUsername()));
+        return success(adminService.getAdminUserInfoByUserName(securityUtil.getUser()));
     }
 
     /**
@@ -90,7 +90,7 @@ public class AdminController extends SuperController {
     @ApiOperation(value = "退出登录")
     @PostMapping("/logout")
     public SuccessResponses<Void> logout(){
-        return success();
+        return success(adminService.logout(securityUtil.getUser()));
     }
 
     /**

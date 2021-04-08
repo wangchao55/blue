@@ -17,4 +17,19 @@ public interface AdminUserCacheService {
      * 设置缓存后台用户信息
      */
     void saveAdminInfoByRedis(Admin admin);
+
+    /**
+     * 缓存token
+     */
+    void saveAdminToken(String userName,String token);
+
+    /**
+     * 删除token
+     */
+    Void delAdminToken(String userName);
+
+    /**
+     * 获取token
+     */
+    String getAdminToken(String userName);
 }
