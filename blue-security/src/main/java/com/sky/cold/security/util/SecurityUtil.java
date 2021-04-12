@@ -1,5 +1,6 @@
 package com.sky.cold.security.util;
 
+import com.sky.cold.bo.AdminUserDetails;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.exception.ApiException;
 import org.springframework.context.annotation.Configuration;
@@ -37,19 +38,16 @@ public class SecurityUtil {
      * 获取用户名称
      */
     public String getUser(Authentication authentication) {
-        Principal principal = (Principal) authentication.getPrincipal();
-        return principal.getName();
+        AdminUserDetails principal = (AdminUserDetails) authentication.getPrincipal();
+        return principal.getUsername();
     }
 
     /**
      * 获取用户信息
      */
-    public Principal getUserInfo() {
-        return (Principal) getAuthentication().getPrincipal();
+    public AdminUserDetails getUserInfo() {
+        return (AdminUserDetails) getAuthentication().getPrincipal();
     }
 
-    /**
-     * 获取当前登录用户信息
-     */
 
 }
