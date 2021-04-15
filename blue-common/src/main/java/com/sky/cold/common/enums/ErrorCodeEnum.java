@@ -92,18 +92,35 @@ public enum ErrorCodeEnum {
      * 未找到该用户
      */
     USER_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, true, "未找到该用户"),
+
     /**
-     * 原密码不正确
+     * 未找到该角色
      */
-    ORIGINAL_PASSWORD_IS_INCORRECT(HttpServletResponse.SC_BAD_REQUEST, true, "原密码不正确"),
-    /**
-     * 用户名已存在
-     */
-    USERNAME_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "用户名已存在"),
+    ROLE_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, true, "未找到该角色"),
+
     /**
      * 未找到该菜单
      */
     MENU_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, true, "未找到该菜单"),
+    /**
+     * 原密码不正确
+     */
+    ORIGINAL_PASSWORD_IS_INCORRECT(HttpServletResponse.SC_BAD_REQUEST, true, "原密码不正确"),
+
+    /**
+     * 新密码不一致
+     */
+    NEW_PASSWORD_NOT_CONSISTENT(HttpServletResponse.SC_BAD_REQUEST,true,"两次密码不一致"),
+
+    /**
+     * 用户名已存在
+     */
+    USERNAME_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "用户名已存在"),
+
+    /**
+     * 角色已存在
+     */
+    ROLE_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "角色已存在"),
 
     /**
      * token已过期

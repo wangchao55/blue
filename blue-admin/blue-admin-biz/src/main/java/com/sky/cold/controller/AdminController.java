@@ -6,6 +6,7 @@ import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.entity.Admin;
 import com.sky.cold.security.util.SecurityUtil;
 import com.sky.cold.service.AdminService;
+import com.sky.cold.vo.AdminPasswordVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,12 +124,30 @@ public class AdminController extends SuperController {
     }
 
     /**
-     * 删除
+     * 批量修改用户状态
      */
-    @ApiOperation(value = "通过id删除后台用户表")
+    @ApiOperation(value = "批量修改用户状态")
     @DeleteMapping("/deleteAdminInfo")
-    public SuccessResponses<Boolean> deleteAdminInfo(@RequestBody String ids){
+    public SuccessResponses<Boolean> deleteAdminInfo(String ids){
         return success(adminService.deleteAdminInfo(ids));
+    }
+
+    /**
+     * 修改密码
+     */
+    @ApiOperation(value = "修改密码")
+    @PutMapping("/updatePassword")
+    public SuccessResponses<Boolean> updatePassword(@RequestBody @Validated AdminPasswordVo adminPasswordVo){
+        return success(adminService.updatePassword(adminPasswordVo,securityUtil.getUser()));
+    }
+
+    /**
+     * 给用户分配角色
+     */
+    @ApiOperation(value = "给用户分配角色")
+    @PostMapping("/distributionAdminRoleRelated")
+    public SuccessResponses<Boolean> distributionAdminRoleRelated(String roleIds,Long adminId){
+        return success(adminService.distributionAdminRoleRelated(roleIds,adminId));
     }
 
 }

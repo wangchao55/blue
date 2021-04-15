@@ -2,6 +2,7 @@ package com.sky.cold.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.cold.bo.AdminUserDetails;
@@ -10,8 +11,10 @@ import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.AdminDao;
 import com.sky.cold.entity.Admin;
+import com.sky.cold.entity.AdminRoleRelation;
 import com.sky.cold.security.util.JWTTokenUtil;
 import com.sky.cold.service.AdminService;
+import com.sky.cold.vo.AdminPasswordVo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -210,6 +213,41 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
                 LOGGER.error("删除用户失败:{}",id);
             }
             return flag;
+        }).collect(Collectors.toList());
+        return true;
+    }
+
+    /**
+     * 修改密码
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean updatePassword(AdminPasswordVo adminPasswordVo, String userName) {
+        Admin admin = this.getAdminUserInfoByUserName(userName);
+        if(!passwordEncoder.matches(adminPasswordVo.getOldPassword(),admin.getPassword())){
+            //密码错误
+            ApiAssert.failure(ErrorCodeEnum.ORIGINAL_PASSWORD_IS_INCORRECT);
+        }
+        if(!adminPasswordVo.getNewPassword().equals(adminPasswordVo.getConfirmNewPassword())){
+           ApiAssert.failure(ErrorCodeEnum.NEW_PASSWORD_NOT_CONSISTENT);
+        }
+        admin.setPassword(passwordEncoder.encode(adminPasswordVo.getNewPassword()));
+        return admin.updateById();
+    }
+
+    /**
+     * 给用户分配角色
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean distributionAdminRoleRelated(String roleIds, Long adminId) {
+        //删除原有用户与角色关联
+        new AdminRoleRelation().delete(Wrappers.<AdminRoleRelation>query().lambda().eq(AdminRoleRelation::getAdminId,adminId));
+        Stream.of(roleIds.split(",")).map(Long::parseLong).collect(Collectors.toList()).stream().map(roleId ->{
+                AdminRoleRelation adminRoleRelation = new AdminRoleRelation();
+                adminRoleRelation.setAdminId(adminId);
+                adminRoleRelation.setRoleId(roleId);
+                return adminRoleRelation.insert();
         }).collect(Collectors.toList());
         return true;
     }

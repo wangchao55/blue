@@ -1,5 +1,6 @@
 package com.sky.cold.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.entity.Role;
@@ -27,59 +28,48 @@ public class RoleController extends SuperController {
     private RoleService roleService;
 
     /**
-     * 列表
+     * 列表查询
      */
     @ApiOperation(value = "列表查询", notes = "列表查询")
-    @GetMapping("/list")
-    public SuccessResponses list(@RequestParam Map<String, Object> params){
-        Object page = roleService.list();
-
-        return success(page);
+    @GetMapping("/getRoleList/{pageNum}/{pageSize}/{name}")
+    public SuccessResponses<IPage<Role>> getRoleList(@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize,@PathVariable("name") String name){
+        return success(roleService.getRoleList(pageNum,pageSize,name));
     }
-
 
     /**
      * 信息
      */
     @ApiOperation(value = "通过id查询")
-    @GetMapping("/info/{id}")
-    public SuccessResponses info(@PathVariable("id") Long id){
-		Role role = roleService.getById(id);
-
-        return success(role);
+    @GetMapping("/getRoleInfo/{id}")
+    public SuccessResponses<Role> getRoleInfo(@PathVariable("id") Long id){
+        return success(roleService.getRoleInfo(id));
     }
 
     /**
      * 保存
      */
     @ApiOperation(value = "新增后台用户角色表")
-    @PostMapping("/save")
-    public SuccessResponses save(@RequestBody Role role){
-		roleService.save(role);
-
-        return success();
+    @PostMapping("/saveRoleInfo")
+    public SuccessResponses<Boolean> saveRoleInfo(@RequestBody Role role){
+        return success(roleService.saveRoleInfo(role));
     }
 
     /**
      * 修改
      */
     @ApiOperation(value = "修改后台用户角色表")
-    @PutMapping("/update")
-    public SuccessResponses update(@RequestBody Role role){
-		roleService.updateById(role);
-
-        return success();
+    @PutMapping("/updateRoleInfo")
+    public SuccessResponses<Boolean> updateRoleInfo(@RequestBody Role role){
+        return success(roleService.updateRoleInfo(role));
     }
 
     /**
-     * 删除
+     * 修改角色状态
      */
-    @ApiOperation(value = "通过id删除后台用户角色表")
-    @DeleteMapping("/delete")
-    public SuccessResponses delete(@RequestBody Long[] ids){
-		roleService.removeByIds(Arrays.asList(ids));
-
-        return success();
+    @ApiOperation(value = "修改角色状态")
+    @PutMapping("/updateRoleStatus")
+    public SuccessResponses<Boolean> updateRoleStatus(String ids){
+        return success(roleService.updateRoleStatus(ids));
     }
 
 }
