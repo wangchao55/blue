@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.RoleDao;
-import com.sky.cold.entity.Role;
+import com.sky.cold.entity.*;
 import com.sky.cold.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -91,6 +92,67 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
             return flag;
         }).collect(Collectors.toList());
         return true;
+    }
+
+    /**
+     * 给角色分配菜单
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean saveMenuToRole(String menuIds, Long roleId) {
+        //删除之前角色所属菜单
+        new RoleMenuRelation().delete(Wrappers.<RoleMenuRelation>query().lambda().eq(RoleMenuRelation::getRoleId,roleId));
+        Stream.of(menuIds.split(",")).map(Long::parseLong).collect(Collectors.toList()).stream().map(menuId -> {
+            RoleMenuRelation roleMenuRelation = new RoleMenuRelation();
+            roleMenuRelation.setRoleId(roleId);
+            roleMenuRelation.setMenuId(menuId);
+            return roleMenuRelation.insert();
+        }).collect(Collectors.toList());
+        return true;
+    }
+
+    /**
+     * 给角色分配资源
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean saveResourceToRole(String resourceIds, Long roleId) {
+        new RoleResourceRelation().delete(Wrappers.<RoleResourceRelation>query().lambda().eq(RoleResourceRelation::getRoleId,roleId));
+        Stream.of(resourceIds.split(",")).map(Long::parseLong).collect(Collectors.toList()).stream().map(resourceId -> {
+            RoleResourceRelation roleResourceRelation = new RoleResourceRelation();
+            roleResourceRelation.setResourceId(resourceId);
+            roleResourceRelation.setRoleId(roleId);
+            return roleResourceRelation.insert();
+        }).collect(Collectors.toList());
+        return true;
+    }
+
+    /**
+     * 获取角色下的菜单
+     */
+    @Override
+    public List<Menu> getMenuList(Long roleId) {
+        List<RoleMenuRelation> roleMenuRelationList = new RoleMenuRelation().selectList(Wrappers.<RoleMenuRelation>query().lambda()
+                .select(RoleMenuRelation::getMenuId)
+                .eq(RoleMenuRelation::getRoleId, roleId));
+        return roleMenuRelationList
+                .stream().map(RoleMenuRelation::getMenuId).collect(Collectors.toList())
+                .stream().map(menuId -> {
+                return new Menu().selectById(menuId);
+                }).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取角色下的资源
+     */
+    @Override
+    public List<Resource> getResourceListByRoleId(Long roleId) {
+        List<RoleResourceRelation> roleResourceRelationList = new RoleResourceRelation().selectList(Wrappers.<RoleResourceRelation>query().lambda()
+                .select(RoleResourceRelation::getResourceId)
+                .eq(RoleResourceRelation::getRoleId, roleId));
+        return roleResourceRelationList.stream().map(roleResourceRelation -> {
+                    return new Resource().selectById(roleResourceRelation);
+                }).collect(Collectors.toList());
     }
 
 }

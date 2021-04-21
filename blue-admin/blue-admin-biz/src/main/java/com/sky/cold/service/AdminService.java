@@ -3,10 +3,12 @@ package com.sky.cold.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.cold.entity.Admin;
+import com.sky.cold.entity.Role;
 import com.sky.cold.vo.AdminPasswordVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -56,5 +58,8 @@ public interface AdminService extends IService<Admin> {
     Boolean updatePassword(AdminPasswordVo adminPasswordVo, String userName);
 
     Boolean distributionAdminRoleRelated(String roleIds, Long adminId);
+
+    List<String> getAdminRoleInfo(Long adminId);
+
 }
 

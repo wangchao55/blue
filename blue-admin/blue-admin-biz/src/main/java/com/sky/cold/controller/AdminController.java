@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Map;
 
 
@@ -148,6 +149,15 @@ public class AdminController extends SuperController {
     @PostMapping("/distributionAdminRoleRelated")
     public SuccessResponses<Boolean> distributionAdminRoleRelated(String roleIds,Long adminId){
         return success(adminService.distributionAdminRoleRelated(roleIds,adminId));
+    }
+
+    /**
+     * 获取用户角色信息
+     */
+    @ApiOperation(value = "获取用户角色信息")
+    @GetMapping("/getAdminRoleInfo/{adminId}")
+    public SuccessResponses<List<String>> getAdminRoleInfo(@NotNull(message = "id不能为空") @PathVariable("adminId") Long adminId){
+        return success(adminService.getAdminRoleInfo(adminId));
     }
 
 }

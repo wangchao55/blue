@@ -3,6 +3,8 @@ package com.sky.cold.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
+import com.sky.cold.entity.Menu;
+import com.sky.cold.entity.Resource;
 import com.sky.cold.entity.Role;
 import com.sky.cold.service.RoleService;
 import io.swagger.annotations.Api;
@@ -10,7 +12,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -71,5 +75,42 @@ public class RoleController extends SuperController {
     public SuccessResponses<Boolean> updateRoleStatus(String ids){
         return success(roleService.updateRoleStatus(ids));
     }
+
+    /**
+     * 给角色分配菜单
+     */
+    @ApiOperation(value = "给角色分配菜单")
+    @PostMapping("/saveMenuToRole")
+    public SuccessResponses<Boolean> saveMenuToRole(String menuIds, Long roleId){
+        return success(roleService.saveMenuToRole(menuIds,roleId));
+    }
+
+    /**
+     * 给角色分配资源
+     */
+    @ApiOperation(value = "给角色分配资源")
+    @PostMapping("/saveResourceToRole")
+    public SuccessResponses<Boolean> saveResourceToRole(String resourceIds,Long roleId){
+        return success(roleService.saveResourceToRole(resourceIds,roleId));
+    }
+
+    /**
+     * 获取角色相关菜单
+     */
+    @ApiOperation(value = "获取角色相关菜单")
+    @GetMapping("/getMenuListByRoleId/{roleId}")
+    public SuccessResponses<List<Menu>> getMenuList(@NotNull(message = "角色ID不能为空") @PathVariable("roleId") Long roleId){
+        return success(roleService.getMenuList(roleId));
+    }
+
+    /**
+     * 获取角色相关资源
+     */
+    @ApiOperation(value = "获取角色相关资源")
+    @GetMapping("/getResourceListByRoleId/{roleId}")
+    public SuccessResponses<List<Resource>> getResourceListByRoleId(@NotNull(message = "角色ID不能为空") @PathVariable("roleId") Long roleId){
+        return success(roleService.getResourceListByRoleId(roleId));
+    }
+
 
 }

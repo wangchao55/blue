@@ -2,8 +2,12 @@ package com.sky.cold.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sky.cold.entity.Menu;
+import com.sky.cold.entity.Resource;
 import com.sky.cold.entity.Role;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 
 /**
@@ -23,5 +27,13 @@ public interface RoleService extends IService<Role> {
     IPage<Role> getRoleList(int pageNum, int pageSize, String name);
 
     Boolean updateRoleStatus(String ids);
+
+    Boolean saveMenuToRole(String menuIds, Long roleId);
+
+    Boolean saveResourceToRole(String resourceIds, Long roleId);
+
+    List<Menu> getMenuList(Long roleId);
+
+    List<Resource> getResourceListByRoleId(Long roleId);
 }
 

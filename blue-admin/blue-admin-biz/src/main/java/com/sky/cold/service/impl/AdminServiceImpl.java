@@ -12,6 +12,7 @@ import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.AdminDao;
 import com.sky.cold.entity.Admin;
 import com.sky.cold.entity.AdminRoleRelation;
+import com.sky.cold.entity.Role;
 import com.sky.cold.security.util.JWTTokenUtil;
 import com.sky.cold.service.AdminService;
 import com.sky.cold.vo.AdminPasswordVo;
@@ -250,6 +251,19 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
                 return adminRoleRelation.insert();
         }).collect(Collectors.toList());
         return true;
+    }
+
+    /**
+     * 获取用户角色信息
+     */
+    @Override
+    public List<String> getAdminRoleInfo(Long adminId) {
+        return new AdminRoleRelation().selectList(Wrappers.<AdminRoleRelation>query().lambda()
+                .select(AdminRoleRelation::getRoleId)
+                .eq(AdminRoleRelation::getAdminId, adminId))
+                .stream().map(AdminRoleRelation::getRoleId).collect(Collectors.toList())
+                .stream().map(roleId -> new Role().selectOne(Wrappers.<Role>query().lambda().eq(Role::getId,roleId).eq(Role::getStatus,1))).collect(Collectors.toList())
+                .stream().map(Role::getName).collect(Collectors.toList());
     }
 
 }
