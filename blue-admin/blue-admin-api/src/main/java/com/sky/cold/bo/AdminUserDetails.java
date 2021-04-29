@@ -1,22 +1,30 @@
 package com.sky.cold.bo;
 
 import com.sky.cold.entity.Admin;
+import com.sky.cold.entity.Resource;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * SpringSecurity需要的用户详情
  */
 public class AdminUserDetails implements UserDetails {
     @Getter
+    @Setter
     private Admin admin;
 
-    public AdminUserDetails(Admin admin) {
-        this.admin = admin;
+    @Getter
+    @Setter
+    private List<Resource> resourceList;
 
+    public AdminUserDetails(Admin admin,List<Resource> resourceList) {
+        this.admin = admin;
+        this.resourceList = resourceList;
     }
 
     @Override

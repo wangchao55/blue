@@ -2,6 +2,7 @@ package com.sky.cold.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sky.cold.dto.AdminInfoDto;
 import com.sky.cold.entity.Admin;
 import com.sky.cold.entity.Role;
 import com.sky.cold.vo.AdminPasswordVo;
@@ -35,7 +36,7 @@ public interface AdminService extends IService<Admin> {
     /**
      * 通过用户名称获取用户信息
      */
-    Admin getAdminUserInfoByUserName(String userName);
+    AdminInfoDto getAdminUserInfoByUserName(String userName);
 
     Map<String,Object> refreshToken(String token);
 
@@ -59,7 +60,7 @@ public interface AdminService extends IService<Admin> {
 
     Boolean distributionAdminRoleRelated(String roleIds, Long adminId);
 
-    List<String> getAdminRoleInfo(Long adminId);
+    List<Role> getAdminRoleInfo(Long adminId);
 
 }
 

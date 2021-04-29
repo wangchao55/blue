@@ -10,12 +10,15 @@ import com.sky.cold.cache.service.AdminUserCacheService;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.AdminDao;
-import com.sky.cold.entity.Admin;
-import com.sky.cold.entity.AdminRoleRelation;
-import com.sky.cold.entity.Role;
+import com.sky.cold.dao.AdminRoleRelationDao;
+import com.sky.cold.dto.AdminInfoDto;
+import com.sky.cold.entity.*;
 import com.sky.cold.security.util.JWTTokenUtil;
+import com.sky.cold.service.AdminRoleRelationService;
 import com.sky.cold.service.AdminService;
+import com.sky.cold.service.MenuService;
 import com.sky.cold.vo.AdminPasswordVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +52,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
     AdminDao adminDao;
 
     @Autowired
+    AdminRoleRelationService adminRoleRelationService;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
     AdminUserCacheService adminUserCacheService;
+
+    @Autowired
+    MenuService menuService;
 
     @Autowired
     JWTTokenUtil jwtTokenUtil;
@@ -121,15 +130,51 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
     @Override
     public UserDetails loadUserByUserName(String userName){
         //获取用户信息
-        Admin admin = getAdminUserInfoByUserName(userName);
-        return new AdminUserDetails(admin);
+        Admin admin = getAdminInfoByUserName(userName);
+        //获取用户资源列表
+        List<Resource> resourceList = getResourceListByUserInfo(admin.getId());
+        return new AdminUserDetails(admin,resourceList);
+    }
+
+    /**
+     * 获取该用户下的资源列表
+     */
+    private List<Resource> getResourceListByUserInfo(Long adminId) {
+        //从缓存中获取
+        List<Resource> resourceList = adminUserCacheService.getResourceList(adminId);
+        if(CollectionUtils.isNotEmpty(resourceList)){
+            return resourceList;
+        }
+        resourceList = adminRoleRelationService.getRosourceListByAdminId(adminId);
+        if(CollectionUtils.isNotEmpty(resourceList)){
+            //存入缓存
+            adminUserCacheService.setResourceList(adminId,resourceList);
+        }
+        return resourceList;
     }
 
     /**
      * 通过用户名获取用户信息
      */
     @Override
-    public Admin getAdminUserInfoByUserName(String userName) {
+    public AdminInfoDto getAdminUserInfoByUserName(String userName) {
+        Admin admin = this.getAdminInfoByUserName(userName);
+        //获取用户资源列表
+        Long adminId = admin.getId();
+        List<Resource> resourceList = this.getResourceListByUserInfo(adminId);
+        //获取该用户角色
+        List<Role> roleList = this.getAdminRoleInfo(adminId);
+        //获取用户菜单列表
+        List<Menu> menuList = adminRoleRelationService.getMenuListByAdminId(adminId);
+        AdminInfoDto adminInfoDto = new AdminInfoDto();
+        adminInfoDto.setAdmin(admin);
+        adminInfoDto.setMenuList(menuList);
+        adminInfoDto.setRoleList(roleList);
+        adminInfoDto.setResourceList(resourceList);
+        return adminInfoDto;
+    }
+
+    private Admin getAdminInfoByUserName(String userName){
         //从缓存中获取用户信息
         Admin admin = adminUserCacheService.getAdminInfoByRedis(userName);
         if (admin != null) {
@@ -208,6 +253,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
                 flag = admin.updateById();
                 if(flag){
                     adminUserCacheService.delAdminInfoByRedis(admin.getUsername());
+                    adminUserCacheService.delResourceListByAdminId(id);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -224,7 +270,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean updatePassword(AdminPasswordVo adminPasswordVo, String userName) {
-        Admin admin = this.getAdminUserInfoByUserName(userName);
+        Admin admin = this.getAdminInfoByUserName(userName);
         if(!passwordEncoder.matches(adminPasswordVo.getOldPassword(),admin.getPassword())){
             //密码错误
             ApiAssert.failure(ErrorCodeEnum.ORIGINAL_PASSWORD_IS_INCORRECT);
@@ -250,6 +296,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
                 adminRoleRelation.setRoleId(roleId);
                 return adminRoleRelation.insert();
         }).collect(Collectors.toList());
+        //清除该用户的资源列表
+        adminUserCacheService.delResourceListByAdminId(adminId);
         return true;
     }
 
@@ -257,13 +305,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
      * 获取用户角色信息
      */
     @Override
-    public List<String> getAdminRoleInfo(Long adminId) {
+    public List<Role> getAdminRoleInfo(Long adminId) {
         return new AdminRoleRelation().selectList(Wrappers.<AdminRoleRelation>query().lambda()
                 .select(AdminRoleRelation::getRoleId)
                 .eq(AdminRoleRelation::getAdminId, adminId))
                 .stream().map(AdminRoleRelation::getRoleId).collect(Collectors.toList())
-                .stream().map(roleId -> new Role().selectOne(Wrappers.<Role>query().lambda().eq(Role::getId,roleId).eq(Role::getStatus,1))).collect(Collectors.toList())
-                .stream().map(Role::getName).collect(Collectors.toList());
+                .stream().map(roleId -> new Role().selectOne(Wrappers.<Role>query().lambda().eq(Role::getId,roleId).eq(Role::getStatus,1))).collect(Collectors.toList());
     }
 
 }

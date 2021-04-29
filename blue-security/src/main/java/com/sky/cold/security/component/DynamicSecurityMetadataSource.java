@@ -26,6 +26,7 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
      */
     @PostConstruct
     public void loadDataSource() {
+        //map封装的所有需要访问权限
         configAttributeMap = dynamicSecurityService.loadDataSource();
     }
 

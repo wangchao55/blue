@@ -1,5 +1,6 @@
 package com.sky.cold.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.entity.Resource;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 
 
 /**
@@ -30,11 +31,13 @@ public class ResourceController extends SuperController {
      * 列表
      */
     @ApiOperation(value = "列表查询", notes = "列表查询")
-    @GetMapping("/list")
-    public SuccessResponses list(@RequestParam Map<String, Object> params){
-        Object page = resourceService.list();
-
-        return success(page);
+    @GetMapping("/getResourceList")
+    public SuccessResponses<IPage<Resource>> getResourceList(@RequestParam(required = false) Long categoryId,
+                                                  @RequestParam(required = false) String resourceName,
+                                                  @RequestParam(required = false) String resourceUrl,
+                                                  @RequestParam Integer pageNum,
+                                                  @RequestParam Integer pageSize){
+        return success(resourceService.getResourceList(pageNum,pageSize,categoryId,resourceName,resourceUrl));
     }
 
 
@@ -42,44 +45,44 @@ public class ResourceController extends SuperController {
      * 信息
      */
     @ApiOperation(value = "通过id查询")
-    @GetMapping("/info/{id}")
-    public SuccessResponses info(@PathVariable("id") Long id){
-		Resource resource = resourceService.getById(id);
-
-        return success(resource);
+    @GetMapping("/getResourceInfo/{id}")
+    public SuccessResponses<Resource> getResourceInfo(@PathVariable("id") Long id){
+        return success(resourceService.getResourceInfo(id));
     }
 
     /**
      * 保存
      */
     @ApiOperation(value = "新增后台资源表")
-    @PostMapping("/save")
-    public SuccessResponses save(@RequestBody Resource resource){
-		resourceService.save(resource);
-
-        return success();
+    @PostMapping("/saveResourceInfo")
+    public SuccessResponses<Boolean> saveResourceInfo(@RequestBody Resource resource){
+        return success(resourceService.saveResourceInfo(resource));
     }
 
     /**
      * 修改
      */
     @ApiOperation(value = "修改后台资源表")
-    @PutMapping("/update")
-    public SuccessResponses update(@RequestBody Resource resource){
-		resourceService.updateById(resource);
-
-        return success();
+    @PutMapping("/updateResourceInfo")
+    public SuccessResponses<Boolean> updateResourceInfo(@RequestBody Resource resource){
+        return success(resourceService.updateResourceInfo(resource));
     }
 
     /**
      * 删除
      */
     @ApiOperation(value = "通过id删除后台资源表")
-    @DeleteMapping("/delete")
-    public SuccessResponses delete(@RequestBody Long[] ids){
-		resourceService.removeByIds(Arrays.asList(ids));
-
-        return success();
+    @DeleteMapping("/deleteResourceInfo/{id}")
+    public SuccessResponses<Boolean> deleteResourceInfo(@PathVariable("id") Long id){
+        return success(resourceService.deleteResourceInfo(id));
     }
 
+    /**
+     * 获取资源列表
+     */
+    @ApiOperation(value = "获取资源列表")
+    @GetMapping("/getResourceListAll")
+    public SuccessResponses<List<Resource>> getResourceListAll(){
+        return success(resourceService.getResourceListAll());
+    }
 }

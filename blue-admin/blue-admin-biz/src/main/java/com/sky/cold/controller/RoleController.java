@@ -68,6 +68,15 @@ public class RoleController extends SuperController {
     }
 
     /**
+     * 批量删除角色
+     */
+    @ApiOperation(value = "批量删除角色")
+    @DeleteMapping("/deleteRole")
+    public SuccessResponses<Boolean> deleteRole(String ids){
+        return success(roleService.deleteRole(ids));
+    }
+
+    /**
      * 修改角色状态
      */
     @ApiOperation(value = "修改角色状态")

@@ -1,7 +1,9 @@
 package com.sky.cold.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.cold.entity.ResourceCategory;
+import org.springframework.http.HttpStatus;
 
 
 /**
@@ -12,5 +14,14 @@ import com.sky.cold.entity.ResourceCategory;
  */
 public interface ResourceCategoryService extends IService<ResourceCategory> {
 
+    IPage<ResourceCategory> getResourceCategoryList(Integer pageNum, Integer pageSize);
+
+    ResourceCategory getResourceCategoryInfo(Long id);
+
+    Boolean saveResourceCategoryInfo(ResourceCategory resourceCategory);
+
+    Boolean updateResourceCategoryInfo(ResourceCategory resourceCategory);
+
+    Boolean delete(Long id);
 }
 

@@ -11,4 +11,48 @@
     </resultMap>
 
 
+    <select id="getRosourceListByAdminId" resultType="com.sky.cold.entity.Resource">
+        SELECT
+            res.id,
+            res.create_time createTime,
+            res.`name`,
+            res.url,
+            res.description,
+            res.category_id
+        FROM
+            ums_admin_role_relation uarr
+            LEFT JOIN ums_role ur ON ur.id = uarr.role_id
+            LEFT JOIN ums_role_resource_relation urrr ON urrr.role_id = ur.id
+            LEFT JOIN ums_resource res ON res.id = urrr.resource_id
+        WHERE
+            uarr.admin_id = #{adminId}
+            AND res.id IS NOT NULL
+        GROUP BY
+            res.id
+    </select>
+
+    <select id="getMenuListByAdminId" resultType="com.sky.cold.entity.Menu">
+        SELECT
+            m.id id,
+            m.parent_id parentId,
+            m.create_time createTime,
+            m.title title,
+            m.level level,
+            m.sort sort,
+            m.name name,
+            m.icon icon,
+            m.hidden hidden
+        FROM
+            ums_admin_role_relation arr
+            LEFT JOIN ums_role r ON arr.role_id = r.id
+            LEFT JOIN ums_role_menu_relation rmr ON r.id = rmr.role_id
+            LEFT JOIN ums_menu m ON rmr.menu_id = m.id
+        WHERE
+            arr.admin_id = #{adminId}
+            AND m.id IS NOT NULL
+        GROUP BY
+            m.id
+    </select>
+
+
 </mapper>

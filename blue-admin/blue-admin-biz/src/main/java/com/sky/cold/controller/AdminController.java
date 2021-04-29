@@ -3,7 +3,9 @@ package com.sky.cold.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
+import com.sky.cold.dto.AdminInfoDto;
 import com.sky.cold.entity.Admin;
+import com.sky.cold.entity.Role;
 import com.sky.cold.security.util.SecurityUtil;
 import com.sky.cold.service.AdminService;
 import com.sky.cold.vo.AdminPasswordVo;
@@ -40,22 +42,12 @@ public class AdminController extends SuperController {
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
 
-
-    /**
-     * 通过用户名称获取用户信息
-     */
-    @ApiOperation(value = "通过用户名称获取用户信息")
-    @GetMapping("/getAdminUserInfoByUserName/{userName}")
-    public SuccessResponses<Admin> getAdminUserInfoByUserName(@PathVariable("userName") String userName){
-        return success(adminService.getAdminUserInfoByUserName(userName));
-    }
-
     /**
      * 通过Authorization获取用户信息
      */
     @ApiOperation(value = "通过Authorization获取用户信息")
     @GetMapping("/getAdminUserInfo")
-    public SuccessResponses<Admin> getAdminUserInfo(){
+    public SuccessResponses<AdminInfoDto> getAdminUserInfo(){
         return success(adminService.getAdminUserInfoByUserName(securityUtil.getUser()));
     }
 
@@ -156,7 +148,7 @@ public class AdminController extends SuperController {
      */
     @ApiOperation(value = "获取用户角色信息")
     @GetMapping("/getAdminRoleInfo/{adminId}")
-    public SuccessResponses<List<String>> getAdminRoleInfo(@NotNull(message = "id不能为空") @PathVariable("adminId") Long adminId){
+    public SuccessResponses<List<Role>> getAdminRoleInfo(@NotNull(message = "id不能为空") @PathVariable("adminId") Long adminId){
         return success(adminService.getAdminRoleInfo(adminId));
     }
 

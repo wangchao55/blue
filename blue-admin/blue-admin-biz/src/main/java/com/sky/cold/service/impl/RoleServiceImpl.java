@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sky.cold.cache.service.AdminUserCacheService;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.RoleDao;
@@ -12,6 +13,7 @@ import com.sky.cold.entity.*;
 import com.sky.cold.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,9 @@ import java.util.stream.Stream;
 public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
+
+    @Autowired
+    AdminUserCacheService adminUserCacheService;
 
     /**
      * 新增角色信息
@@ -124,6 +129,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
             roleResourceRelation.setRoleId(roleId);
             return roleResourceRelation.insert();
         }).collect(Collectors.toList());
+        adminUserCacheService.delResourceListByRoleId(roleId);
         return true;
     }
 
@@ -153,6 +159,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         return roleResourceRelationList.stream().map(roleResourceRelation -> {
                     return new Resource().selectById(roleResourceRelation);
                 }).collect(Collectors.toList());
+    }
+
+    /**
+     * 批量删除角色信息
+     * @param ids
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean deleteRole(String ids) {
+        Stream.of(ids.split(",")).map(Long::parseLong).collect(Collectors.toList())
+                .stream().map(roleId -> {
+                    adminUserCacheService.delResourceListByRoleId(roleId);
+                    return new Role().deleteById(roleId);
+        }).collect(Collectors.toList());
+        return true;
     }
 
 }

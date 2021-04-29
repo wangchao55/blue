@@ -102,6 +102,16 @@ public enum ErrorCodeEnum {
      * 未找到该菜单
      */
     MENU_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, true, "未找到该菜单"),
+
+    /**
+     * 未找到该资源
+     */
+    RESOURCE_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, true, "未找到该资源"),
+
+    /**
+     * 未找到该资源分类
+     */
+    RESOURCE_CATEGPRY_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, true, "未找到该资源分类"),
     /**
      * 原密码不正确
      */
@@ -118,9 +128,24 @@ public enum ErrorCodeEnum {
     USERNAME_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "用户名已存在"),
 
     /**
+     * 菜单已存在
+     */
+    MENU_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "用户名已存在"),
+
+    /**
      * 角色已存在
      */
     ROLE_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "角色已存在"),
+
+    /**
+     * 资源已存在
+     */
+    RESOURCE_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "资源已存在"),
+
+    /**
+     * 资源分类已存在
+     */
+    RESOURCE_CATEGORY_ALREADY_EXISTS(HttpServletResponse.SC_BAD_REQUEST, true, "资源分类已存在"),
 
     /**
      * token已过期

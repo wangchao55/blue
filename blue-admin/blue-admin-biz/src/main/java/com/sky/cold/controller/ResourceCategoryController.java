@@ -1,5 +1,6 @@
 package com.sky.cold.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.entity.ResourceCategory;
@@ -30,11 +31,9 @@ public class ResourceCategoryController extends SuperController {
      * 列表
      */
     @ApiOperation(value = "列表查询", notes = "列表查询")
-    @GetMapping("/list")
-    public SuccessResponses list(@RequestParam Map<String, Object> params){
-        Object page = resourceCategoryService.list();
-
-        return success(page);
+    @GetMapping("/getResourceCategoryList/{pageNum}/{pageSize}")
+    public SuccessResponses<IPage<ResourceCategory>> getResourceCategoryList(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize){
+        return success(resourceCategoryService.getResourceCategoryList(pageNum,pageSize));
     }
 
 
@@ -42,44 +41,36 @@ public class ResourceCategoryController extends SuperController {
      * 信息
      */
     @ApiOperation(value = "通过id查询")
-    @GetMapping("/info/{id}")
-    public SuccessResponses info(@PathVariable("id") Long id){
-		ResourceCategory resourceCategory = resourceCategoryService.getById(id);
-
-        return success(resourceCategory);
+    @GetMapping("/getResourceCategoryInfo/{id}")
+    public SuccessResponses<ResourceCategory> getResourceCategoryInfo(@PathVariable("id") Long id){
+        return success(resourceCategoryService.getResourceCategoryInfo(id));
     }
 
     /**
      * 保存
      */
     @ApiOperation(value = "新增资源分类表")
-    @PostMapping("/save")
-    public SuccessResponses save(@RequestBody ResourceCategory resourceCategory){
-		resourceCategoryService.save(resourceCategory);
-
-        return success();
+    @PostMapping("/saveResourceCategoryInfo")
+    public SuccessResponses<Boolean> saveResourceCategoryInfo(@RequestBody ResourceCategory resourceCategory){
+        return success(	resourceCategoryService.saveResourceCategoryInfo(resourceCategory));
     }
 
     /**
      * 修改
      */
     @ApiOperation(value = "修改资源分类表")
-    @PutMapping("/update")
-    public SuccessResponses update(@RequestBody ResourceCategory resourceCategory){
-		resourceCategoryService.updateById(resourceCategory);
-
-        return success();
+    @PutMapping("/updateResourceCategoryInfo")
+    public SuccessResponses<Boolean> updateResourceCategoryInfo(@RequestBody ResourceCategory resourceCategory){
+        return success(resourceCategoryService.updateResourceCategoryInfo(resourceCategory));
     }
 
     /**
      * 删除
      */
     @ApiOperation(value = "通过id删除资源分类表")
-    @DeleteMapping("/delete")
-    public SuccessResponses delete(@RequestBody Long[] ids){
-		resourceCategoryService.removeByIds(Arrays.asList(ids));
-
-        return success();
+    @DeleteMapping("/delete/{id}")
+    public SuccessResponses<Boolean> delete(@PathVariable("id") Long id){
+        return success(resourceCategoryService.delete(id));
     }
 
 }

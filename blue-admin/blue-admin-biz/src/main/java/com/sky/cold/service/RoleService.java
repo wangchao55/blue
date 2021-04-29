@@ -35,5 +35,7 @@ public interface RoleService extends IService<Role> {
     List<Menu> getMenuList(Long roleId);
 
     List<Resource> getResourceListByRoleId(Long roleId);
+
+    Boolean deleteRole(String ids);
 }
 
