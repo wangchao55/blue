@@ -13,6 +13,7 @@
 
     <modules>
         <module>blue-admin-api</module>
+        <module>blue-admin-biz</module>
     </modules>
 
     <description>后台管理</description>

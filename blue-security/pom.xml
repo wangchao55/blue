@@ -6,7 +6,7 @@
         <groupId>com.sky.cold</groupId>
         <artifactId>blue</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
     </parent>
 
     <artifactId>blue-security</artifactId>
@@ -18,10 +18,10 @@
             <artifactId>blue-admin-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.sky.cold</groupId>
             <artifactId>blue-common</artifactId>
-        </dependency>
+        </dependency>-->
         <!--Security依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
