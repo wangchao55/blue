@@ -1,6 +1,8 @@
 package com.sky.cold.security.handler;
 
 import cn.hutool.json.JSONUtil;
+import com.sky.cold.common.rest.responses.SuccessResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -24,10 +26,10 @@ public class UserAuthAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse.setHeader("Cache-Control","no-cache");
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json");
-        HashMap<Object, Object> map = new HashMap<>(16);
-        map.put("message","未授权");
-        map.put("code","401");
-        httpServletResponse.getWriter().println(JSONUtil.parse(map));
+        SuccessResponses<Object> successResponses = new SuccessResponses<>();
+        successResponses.setStatus(HttpStatus.UNAUTHORIZED.value());
+        successResponses.setResult("未授权");
+        httpServletResponse.getWriter().println(JSONUtil.parse(successResponses));
         httpServletResponse.getWriter().flush();
     }
 }

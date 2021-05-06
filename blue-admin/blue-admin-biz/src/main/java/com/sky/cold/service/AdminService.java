@@ -9,6 +9,9 @@ import com.sky.cold.vo.AdminPasswordVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -62,5 +65,6 @@ public interface AdminService extends IService<Admin> {
 
     List<Role> getAdminRoleInfo(Long adminId);
 
+    Object createKaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }
 

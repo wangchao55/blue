@@ -17,7 +17,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -150,6 +152,15 @@ public class AdminController extends SuperController {
     @GetMapping("/getAdminRoleInfo/{adminId}")
     public SuccessResponses<List<Role>> getAdminRoleInfo(@NotNull(message = "id不能为空") @PathVariable("adminId") Long adminId){
         return success(adminService.getAdminRoleInfo(adminId));
+    }
+
+    /**
+     * 生成验证码
+     */
+    @ApiOperation(value = "生成验证码")
+    @GetMapping("/createKaptcha")
+    public SuccessResponses createKaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return success(adminService.createKaptcha(request,response));
     }
 
 }

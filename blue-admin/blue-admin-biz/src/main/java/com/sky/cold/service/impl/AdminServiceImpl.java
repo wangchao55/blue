@@ -1,13 +1,16 @@
 package com.sky.cold.service.impl;
 
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.code.kaptcha.Producer;
 import com.sky.cold.bo.AdminUserDetails;
 import com.sky.cold.cache.service.AdminUserCacheService;
 import com.sky.cold.common.enums.ErrorCodeEnum;
+import com.sky.cold.common.service.RedisService;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.AdminDao;
 import com.sky.cold.dao.AdminRoleRelationDao;
@@ -31,11 +34,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.BASE64Encoder;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,6 +66,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
 
     @Autowired
     AdminUserCacheService adminUserCacheService;
+
+    @Autowired
+    RedisService redisService;
+
+    @Autowired
+    Producer producer;
 
     @Autowired
     MenuService menuService;
@@ -311,6 +324,28 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
                 .eq(AdminRoleRelation::getAdminId, adminId))
                 .stream().map(AdminRoleRelation::getRoleId).collect(Collectors.toList())
                 .stream().map(roleId -> new Role().selectOne(Wrappers.<Role>query().lambda().eq(Role::getId,roleId).eq(Role::getStatus,1))).collect(Collectors.toList());
+    }
+
+    /**
+     * 生成验证码
+     */
+    @Override
+    public Object createKaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String code = producer.createText();
+        String key = UUID.randomUUID().toString();
+        BufferedImage image = producer.createImage(code);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", outputStream);
+        BASE64Encoder encoder = new BASE64Encoder();
+        String str = "data:image/jpeg;base64,";
+        String base64Img = str + encoder.encode(outputStream.toByteArray());
+        // 存储到redis中
+        redisService.hSet("captcha", key, code, 120);
+        //log.info("验证码 -- {} - {}", key, code);
+        return MapUtil.builder()
+                .put("token", key)
+                .put("base64Img", base64Img)
+                .build();
     }
 
 }

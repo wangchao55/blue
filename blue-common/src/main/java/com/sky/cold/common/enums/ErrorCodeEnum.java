@@ -151,6 +151,16 @@ public enum ErrorCodeEnum {
      * token已过期
      */
     TOKEN_HAS_EXPIRED(HttpServletResponse.SC_ACCEPTED,true,"token已过期"),
+
+    /**
+     * 验证码不能为空
+     */
+    VERIFICATION_CODE_NOT_EMPTY(HttpServletResponse.SC_ACCEPTED,true,"验证码不能为空"),
+
+    /**
+     * 验证码不一致
+     */
+    VERIFICATION_CODE_INCONSISTENT(HttpServletResponse.SC_ACCEPTED,true,"验证码不一致"),
     ;
 
 

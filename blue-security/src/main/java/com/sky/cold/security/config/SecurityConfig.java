@@ -3,8 +3,10 @@ package com.sky.cold.security.config;
 import com.sky.cold.security.component.DynamicAccessDecisionManager;
 import com.sky.cold.security.component.DynamicSecurityMetadataSource;
 import com.sky.cold.security.component.DynamicSecurityService;
+import com.sky.cold.security.filter.CaptchaFilter;
 import com.sky.cold.security.filter.DynamicSecurityFilter;
 import com.sky.cold.security.filter.JwtAuthenticationTokenFilter;
+import com.sky.cold.security.handler.LoginFailureHandler;
 import com.sky.cold.security.handler.UserAuthAccessDeniedHandler;
 import com.sky.cold.security.handler.UserAuthenticationEntryPointHandler;
 import com.sky.cold.security.util.JWTTokenUtil;
@@ -52,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()//配置登录页面
                 .formLogin()
+                .failureHandler(loginFailureHandler())
                 .loginPage("/login")
                 .failureUrl("/login?error=true")
                 .and()//配置退出路径
@@ -74,7 +77,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint())
                 // 自定义权限拦截器JWT过滤器
                 .and()
-                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(captchaFilter(), UsernamePasswordAuthenticationFilter.class)
+        ;
         //有动态权限配置时添加动态权限校验过滤器
         if(dynamicSecurityService!=null){
             registry.and().addFilterBefore(dynamicSecurityFilter(), FilterSecurityInterceptor.class);
@@ -142,4 +147,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new DynamicSecurityMetadataSource();
     }
 
+    @Bean
+    public CaptchaFilter captchaFilter(){
+        return new CaptchaFilter();
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler(){
+        return new LoginFailureHandler();
+    }
 }

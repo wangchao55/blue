@@ -9,9 +9,7 @@ import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.ResourceDao;
 import com.sky.cold.entity.Resource;
-import com.sky.cold.entity.ResourceCategory;
 import com.sky.cold.security.component.DynamicSecurityMetadataSource;
-import com.sky.cold.security.component.DynamicSecurityService;
 import com.sky.cold.service.ResourceService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +23,6 @@ import java.util.List;
 @Service("resourceService")
 public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> implements ResourceService {
 
-    @Autowired
-    DynamicSecurityMetadataSource dynamicSecurityMetadataSource;
 
     @Autowired
     AdminUserCacheService adminUserCacheService;
@@ -62,8 +58,6 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
     public Boolean saveResourceInfo(Resource resource) {
         Resource info = new Resource().selectOne(Wrappers.<Resource>query().lambda().eq(Resource::getName, resource.getName()));
         ApiAssert.isNull(ErrorCodeEnum.RESOURCE_ALREADY_EXISTS,info);
-        //清空资源规则列表
-        dynamicSecurityMetadataSource.clearDataSource();
         resource.setCreateTime(new Date());
         return resource.insert();
     }
@@ -73,7 +67,6 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
      */
     @Override
     public Boolean updateResourceInfo(Resource resource) {
-        dynamicSecurityMetadataSource.clearDataSource();
         adminUserCacheService.delResourceListByResourceId(resource.getId());
         return resource.updateById();
     }
@@ -84,7 +77,6 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
      */
     @Override
     public Boolean deleteResourceInfo(Long id) {
-        dynamicSecurityMetadataSource.clearDataSource();
         adminUserCacheService.delResourceListByResourceId(id);
         return new Resource().deleteById(id);
     }

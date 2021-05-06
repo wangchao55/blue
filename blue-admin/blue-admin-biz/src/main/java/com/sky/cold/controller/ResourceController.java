@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.entity.Resource;
+import com.sky.cold.security.component.DynamicSecurityMetadataSource;
 import com.sky.cold.service.ResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,9 @@ import java.util.List;
 public class ResourceController extends SuperController {
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    DynamicSecurityMetadataSource dynamicSecurityMetadataSource;
 
     /**
      * 列表
@@ -56,6 +60,7 @@ public class ResourceController extends SuperController {
     @ApiOperation(value = "新增后台资源表")
     @PostMapping("/saveResourceInfo")
     public SuccessResponses<Boolean> saveResourceInfo(@RequestBody Resource resource){
+        dynamicSecurityMetadataSource.clearDataSource();
         return success(resourceService.saveResourceInfo(resource));
     }
 
@@ -65,6 +70,7 @@ public class ResourceController extends SuperController {
     @ApiOperation(value = "修改后台资源表")
     @PutMapping("/updateResourceInfo")
     public SuccessResponses<Boolean> updateResourceInfo(@RequestBody Resource resource){
+        dynamicSecurityMetadataSource.clearDataSource();
         return success(resourceService.updateResourceInfo(resource));
     }
 
@@ -74,6 +80,7 @@ public class ResourceController extends SuperController {
     @ApiOperation(value = "通过id删除后台资源表")
     @DeleteMapping("/deleteResourceInfo/{id}")
     public SuccessResponses<Boolean> deleteResourceInfo(@PathVariable("id") Long id){
+        dynamicSecurityMetadataSource.clearDataSource();
         return success(resourceService.deleteResourceInfo(id));
     }
 

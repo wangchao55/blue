@@ -10,6 +10,7 @@ import lombok.*;
  * @author wangchao
  */
 @Getter
+@Setter
 @ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)
