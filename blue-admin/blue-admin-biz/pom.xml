@@ -19,10 +19,16 @@
             <artifactId>blue-admin-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.sky.cold</groupId>
-            <artifactId>blue-common</artifactId>
-        </dependency>-->
+        <!--服务注册-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!--服务注册配置中心-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>

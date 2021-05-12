@@ -1,10 +1,6 @@
 server:
   port: 16010
 spring:
-  application:
-    name: blue-admin
-  profiles:
-    active: dev #默认为开发环境
   servlet:
     multipart:
       enabled: true #开启文件上传
