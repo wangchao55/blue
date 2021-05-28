@@ -6,3 +6,4 @@ spring:
       config:
         server-addr: http://100.125.18.105:8848
         file-extension: yaml
+        group: DEFAULT_GROUP
