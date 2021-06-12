@@ -1,6 +1,7 @@
 package com.sky.cold.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.sky.cold.common.entity.dto.UserInfoDto;
 import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.dto.AdminInfoDto;
@@ -161,6 +162,15 @@ public class AdminController extends SuperController {
     @GetMapping("/createKaptcha")
     public SuccessResponses createKaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
         return success(adminService.createKaptcha(request,response));
+    }
+
+    /**
+     * 通过用户名获取用户信息
+     */
+    @ApiOperation(value = "通过用户名获取用户信息")
+    @GetMapping("/loadUserByUsername")
+    public SuccessResponses<UserInfoDto> loadUserByUsername(@RequestParam String userName){
+        return success(adminService.loadUserByUsername(userName));
     }
 
 }

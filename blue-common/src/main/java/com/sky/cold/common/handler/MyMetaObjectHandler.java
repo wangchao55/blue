@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
  * <p>一些常用的字段如create_time可以实现自动填充
  * 需要在bean中对应的字段加入相应的注解</p>
  *
- * @author : NanCheung
- * @create : 2018/10/27 22:15
+ * @author wangchao
+ * @date 2021-05-29 10:40 上午
  * @see <a href="https://mp.baomidou.com/guide/auto-fill-metainfo.html">网页文档</a>
  */
 @Slf4j

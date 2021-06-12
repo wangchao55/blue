@@ -1,8 +1,8 @@
 package com.sky.cold.common.enums;
 
 /**
- * @author solang
- * @date 2021-04-25 9:28 上午
+ * @author wangchao
+ * @date 2021-05-29 10:40 上午
  */
 public enum CommonTypeEnum {
 

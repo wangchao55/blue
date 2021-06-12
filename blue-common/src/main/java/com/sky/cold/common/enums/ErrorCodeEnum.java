@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 业务异常枚举
- *
- * @author NanCheung
+ * @author wangchao
+ * @date 2021-05-29 10:40 上午
  */
 public enum ErrorCodeEnum {
 

@@ -6,7 +6,8 @@ import java.net.UnknownHostException;
 
 /**
  * 请求工具类
- * Created by macro on 2020/10/8.
+ * @author wangchao
+ * @date 2021-05-29 10:40 上午
  */
 public class RequestUtil {
 

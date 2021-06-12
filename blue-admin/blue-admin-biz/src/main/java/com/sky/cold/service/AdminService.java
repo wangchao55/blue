@@ -2,6 +2,7 @@ package com.sky.cold.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sky.cold.common.entity.dto.UserInfoDto;
 import com.sky.cold.dto.AdminInfoDto;
 import com.sky.cold.entity.Admin;
 import com.sky.cold.entity.Role;
@@ -66,5 +67,7 @@ public interface AdminService extends IService<Admin> {
     List<Role> getAdminRoleInfo(Long adminId);
 
     Object createKaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    UserInfoDto loadUserByUsername(String userName);
 }
 

@@ -1,5 +1,6 @@
 package com.sky.cold.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.code.kaptcha.Producer;
 import com.sky.cold.bo.AdminUserDetails;
 import com.sky.cold.cache.service.AdminUserCacheService;
+import com.sky.cold.common.entity.dto.UserInfoDto;
 import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.service.RedisService;
 import com.sky.cold.common.util.ApiAssert;
@@ -25,6 +27,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -346,6 +349,21 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
                 .put("token", key)
                 .put("base64Img", base64Img)
                 .build();
+    }
+
+    @Override
+    public UserInfoDto loadUserByUsername(String userName) {
+        //获取用户信息
+        Admin admin = getAdminInfoByUserName(userName);
+        //获取用户资源列表
+        List<Role> roleList = this.getAdminRoleInfo(admin.getId());
+        UserInfoDto userInfoDto = new UserInfoDto();
+        BeanUtils.copyProperties(admin,userInfoDto);
+        if(CollectionUtils.isNotEmpty(roleList)){
+            List<String> roleStrList = roleList.stream().map(item -> item.getId() + "_" + item.getName()).collect(Collectors.toList());
+            userInfoDto.setRoles(roleStrList);
+        }
+        return userInfoDto;
     }
 
 }

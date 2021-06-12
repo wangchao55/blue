@@ -31,6 +31,7 @@
         <mysql-connector.version>8.0.20</mysql-connector.version>
         <spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>
         <jjwt.version>0.9.0</jjwt.version>
+        <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
         <aliyun-oss.version>2.5.0</aliyun-oss.version>
         <logstash-logback.version>5.3</logstash-logback.version>
         <minio.version>7.1.0</minio.version>
@@ -45,6 +46,7 @@
         <module>blue-admin</module>
         <module>blue-security</module>
         <module>blue-gateway</module>
+        <module>blue-auth</module>
     </modules>
 
 
@@ -55,12 +57,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--配置文件加解密-->
-        <!--<dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>${jasypt.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -75,12 +71,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--监控客户端-->
-        <!--<dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-            <version>${spring-boot-admin.version}</version>
-        </dependency>-->
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -182,12 +172,6 @@
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.version}</version>
             </dependency>
-            <!-- MyBatis 生成器 -->
-            <!--<dependency>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-core</artifactId>
-                <version>${mybatis-generator.version}</version>
-            </dependency>-->
             <!-- MyBatis-->
             <dependency>
                 <groupId>org.mybatis</groupId>
@@ -211,6 +195,12 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
+            </dependency>
+            <!--JWT(Json Web Token)登录支持-->
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
             </dependency>
             <!-- 阿里云OSS -->
             <dependency>
