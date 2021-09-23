@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(FeignConstant.BLUE_ADMIN)
 public interface AdminService {
 
-    @GetMapping("/admin/loadByUsername")
-    UserInfoDto loadUserByUsername(@RequestParam String username);
+    @GetMapping("/admin/loadUserByUsername")
+    UserInfoDto loadUserByUsername(@RequestParam String userName);
 }
