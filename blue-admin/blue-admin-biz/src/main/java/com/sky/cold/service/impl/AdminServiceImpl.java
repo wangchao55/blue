@@ -1,6 +1,5 @@
 package com.sky.cold.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,7 +14,6 @@ import com.sky.cold.common.enums.ErrorCodeEnum;
 import com.sky.cold.common.service.RedisService;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.AdminDao;
-import com.sky.cold.dao.AdminRoleRelationDao;
 import com.sky.cold.dto.AdminInfoDto;
 import com.sky.cold.entity.*;
 import com.sky.cold.security.util.JWTTokenUtil;
@@ -37,7 +35,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -339,9 +336,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image, "jpg", outputStream);
-        BASE64Encoder encoder = new BASE64Encoder();
+        Base64.Encoder encoder = Base64.getEncoder();
         String str = "data:image/jpeg;base64,";
-        String base64Img = str + encoder.encode(outputStream.toByteArray());
+        String base64Img = str + encoder.encodeToString(outputStream.toByteArray());
         // 存储到redis中
         redisService.hSet("captcha", key, code, 120);
         //log.info("验证码 -- {} - {}", key, code);
