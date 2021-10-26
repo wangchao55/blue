@@ -1,5 +1,17 @@
 spring:
-  profiles:
-    active: dev
   application:
     name: blue-gateway
+  cloud:
+    nacos:
+      # Data Id 的格式是 ${service}-${spring.profile.active}.${file-extension}
+      discovery:
+        service: ${spring.application.name}
+        namespace: ${nacos.namespace}
+      config:
+        namespace: ${nacos.namespace}
+        group: ${spring.application.name}
+        file-extension: yaml
+        extension-configs:
+          - data-id: ${spring.application.name}-druid.yaml
+            group: ${spring.application.name}
+            refresh: true
