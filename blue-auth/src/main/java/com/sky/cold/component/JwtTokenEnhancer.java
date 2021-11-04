@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JWT内容增强器
- * Created by macro on 2020/6/19.
+ * JWT内容增强器 自定义生成token携带信息
+ * Created by wangchao on 2020/6/19.
  */
 @Component
 public class JwtTokenEnhancer implements TokenEnhancer {
