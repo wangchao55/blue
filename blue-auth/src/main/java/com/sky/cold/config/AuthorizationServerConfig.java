@@ -1,23 +1,26 @@
 package com.sky.cold.config;
 
+import com.sky.cold.common.constant.AuthConstant;
 import com.sky.cold.component.JwtTokenEnhancer;
+import com.sky.cold.provider.BlueClientDetailService;
 import com.sky.cold.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.sql.DataSource;
 import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +35,19 @@ import java.util.List;
 @Configuration
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
+    private final DataSource dataSource;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenEnhancer jwtTokenEnhancer;
+
+
+    @Bean
+    public ClientDetailsService blueClientDetailsService(){
+        BlueClientDetailService clientDetailService = new BlueClientDetailService(dataSource);
+        clientDetailService.setSelectClientDetailsSql(AuthConstant.DEFAULT_SELECT_STATEMENT);
+        clientDetailService.setFindClientDetailsSql(AuthConstant.DEFAULT_FIND_STATEMENT);
+        return clientDetailService;
+    }
 
     /***
      * 配置能sso登录的客户端
@@ -44,26 +56,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                //配置client_id
-                .withClient("admin-app")
-                //配置client_secret
-                .secret(passwordEncoder.encode("123456"))
-                //配置申请的权限范围
-                .scopes("all")
-                //配置grant_type，表示授权类型
-                .authorizedGrantTypes("password", "refresh_token")
-                //配置访问token的有效期
-                .accessTokenValiditySeconds(3600*24)
-                //配置刷新token的有效期
-                .refreshTokenValiditySeconds(3600*24*7)
-                .and()
-                .withClient("portal-app")
-                .secret(passwordEncoder.encode("123456"))
-                .scopes("all")
-                .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(3600*24)
-                .refreshTokenValiditySeconds(3600*24*7);
+        //从数据库中获取当前客户端信息
+        clients.withClientDetails(blueClientDetailsService());
     }
 
     @Override
