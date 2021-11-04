@@ -2,6 +2,7 @@ package com.sky.cold.common.constant;
 
 /**
  * 权限相关常量定义
+ *
  * @author wangchao
  * @date 2021-05-29 10:40 上午
  */
@@ -51,5 +52,23 @@ public interface AuthConstant {
      * 用户信息Http请求头
      */
     String USER_TOKEN_HEADER = "user";
+
+    /**
+     * sys_oauth_clinent_details表字段
+     */
+    String CLIENT_FIELDS = "client_id, client_secret, resource_ids, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove";
+
+    String BASE_FIND_STATEMENT = "select" + CLIENT_FIELDS + "from oauth_client_details order by client_id";
+
+    /**
+     * 默认查询所有oauth客户端
+     */
+    String DEFAULT_FIND_STATEMENT = BASE_FIND_STATEMENT + " order by client_id";
+
+    /**
+     * 通过client_id获取详情
+     */
+    String DEFAULT_SELECT_STATEMENT = BASE_FIND_STATEMENT + " where client_id = ?";
+
 
 }
