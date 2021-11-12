@@ -2,13 +2,16 @@ package com.sky.cold.config;
 
 import com.sky.cold.common.constant.AuthConstant;
 import com.sky.cold.component.JwtTokenEnhancer;
-import com.sky.cold.provider.BlueClientDetailService;
+import com.sky.cold.service.BlueClientDetailService;
 import com.sky.cold.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -30,17 +33,25 @@ import java.util.List;
  * @author wangchao
  * @date 2021-05-29 2:58 下午
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableAuthorizationServer
 @Configuration
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+    private final String KEY_STORE_CLASS_PATH = "blue.jks";
+    private final String KEY_STORE_PASSWORD = "blueblue";
+    private final String KEY_STORE_ALIAS = "blue";
 
     private final DataSource dataSource;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenEnhancer jwtTokenEnhancer;
+    private final PasswordEncoder passwordEncoder;
 
 
+    /**
+     * 从数据库中获取client的相关信息
+     */
     @Bean
     public ClientDetailsService blueClientDetailsService(){
         BlueClientDetailService clientDetailService = new BlueClientDetailService(dataSource);
@@ -50,31 +61,38 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /***
-     * 配置能sso登录的客户端
-     * @param clients
-     * @throws Exception
+     * 配置client的相关信息的处理方式为jdbc模式
      */
     @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    @SneakyThrows
+    public void configure(ClientDetailsServiceConfigurer clients) {
         //从数据库中获取当前客户端信息
         clients.withClientDetails(blueClientDetailsService());
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         List<TokenEnhancer> delegates = new ArrayList<>();
         //配置JWT的内容增强器
         delegates.add(jwtTokenEnhancer);
         delegates.add(accessTokenConverter());
         enhancerChain.setTokenEnhancers(delegates);
-        endpoints.authenticationManager(authenticationManager)
+        endpoints
+                //密码管理模式
+                .authenticationManager(authenticationManager)
                 //配置加载用户信息的服务
                 .userDetailsService(userService)
                 .accessTokenConverter(accessTokenConverter())
-                .tokenEnhancer(enhancerChain);
+                //令牌增强
+                .tokenEnhancer(enhancerChain)
+                //允许post提交
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST);
     }
 
+    /**
+     * 密钥
+     */
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
@@ -85,13 +103,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public KeyPair keyPair() {
         //从classpath下的证书中获取秘钥对
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("blue.jks"), "blueblue".toCharArray());
-        return keyStoreKeyFactory.getKeyPair("blue", "blueblue".toCharArray());
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource(KEY_STORE_CLASS_PATH), KEY_STORE_PASSWORD.toCharArray());
+        return keyStoreKeyFactory.getKeyPair(KEY_STORE_ALIAS, KEY_STORE_PASSWORD.toCharArray());
     }
 
+    /**
+     * 配置令牌端点的安全约束
+     */
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.allowFormAuthenticationForClients();
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        security.allowFormAuthenticationForClients()
+                .checkTokenAccess("permitAll()")
+                .tokenKeyAccess("permitAll()");
     }
 
 }
