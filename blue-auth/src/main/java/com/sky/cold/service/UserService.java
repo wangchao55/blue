@@ -2,6 +2,7 @@ package com.sky.cold.service;
 
 import com.sky.cold.common.constant.AuthConstant;
 import com.sky.cold.common.entity.dto.UserInfoDto;
+import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.constant.MessageConstant;
 import com.sky.cold.domain.SecurityUser;
 import com.sky.cold.feign.admin.AdminService;
@@ -39,7 +40,8 @@ public class UserService implements UserDetailsService {
         String clientId = request.getParameter("client_id");
         UserInfoDto userInfoDto = null;
         if(AuthConstant.ADMIN_CLIENT_ID.equals(clientId)){
-            userInfoDto = adminService.loadUserByUsername(username);
+            SuccessResponses<UserInfoDto> userInfoDtoSuccessResponses = adminService.loadUserByUsername(username);
+            userInfoDto = userInfoDtoSuccessResponses.getResult();
         }else{
             //userInfoDto = memberService.loadUserByUsername(username);
         }
