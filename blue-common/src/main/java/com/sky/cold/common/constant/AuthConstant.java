@@ -58,7 +58,7 @@ public interface AuthConstant {
      */
     String CLIENT_FIELDS = "client_id, client_secret, resource_ids, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove";
 
-    String BASE_FIND_STATEMENT = "select" + CLIENT_FIELDS + "from oauth_client_details order by client_id";
+    String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS + " from sys_oauth_client_details";
 
     /**
      * 默认查询所有oauth客户端
