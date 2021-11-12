@@ -2,6 +2,7 @@ package com.sky.cold.feign.admin;
 
 import com.sky.cold.common.constant.FeignConstant;
 import com.sky.cold.common.entity.dto.UserInfoDto;
+import com.sky.cold.common.rest.responses.SuccessResponses;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,5 +15,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AdminService {
 
     @GetMapping("/admin/loadUserByUsername")
-    UserInfoDto loadUserByUsername(@RequestParam String userName);
+    SuccessResponses<UserInfoDto> loadUserByUsername(@RequestParam String userName);
 }
