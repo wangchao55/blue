@@ -16,10 +16,10 @@ import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.AdminDao;
 import com.sky.cold.dto.AdminInfoDto;
 import com.sky.cold.entity.*;
-import com.sky.cold.security.util.JWTTokenUtil;
 import com.sky.cold.service.AdminRoleRelationService;
 import com.sky.cold.service.AdminService;
 import com.sky.cold.service.MenuService;
+import com.sky.cold.util.JWTTokenUtil;
 import com.sky.cold.vo.AdminPasswordVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -208,7 +208,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
         String refreshHeadToken = jwtTokenUtil.refreshHeadToken(oldToken);
         ApiAssert.notNull(ErrorCodeEnum.TOKEN_HAS_EXPIRED,refreshHeadToken);
         map.put("token",refreshHeadToken);
-        map.put("tokenHead",tokenHead);
         return map;
     }
 
