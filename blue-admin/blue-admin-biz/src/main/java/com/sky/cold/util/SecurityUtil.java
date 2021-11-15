@@ -1,4 +1,4 @@
-package com.sky.cold.security.util;
+package com.sky.cold.util;
 
 import com.sky.cold.bo.AdminUserDetails;
 import com.sky.cold.common.enums.ErrorCodeEnum;
@@ -6,8 +6,6 @@ import com.sky.cold.common.exception.ApiException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.security.Principal;
 
 /**
  * @Author: wangchao
