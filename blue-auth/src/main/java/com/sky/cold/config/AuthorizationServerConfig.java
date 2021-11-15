@@ -70,6 +70,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.withClientDetails(blueClientDetailsService());
     }
 
+    /**
+     * 配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
