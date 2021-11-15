@@ -1,4 +1,4 @@
-package com.sky.cold.security.util;
+package com.sky.cold.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
