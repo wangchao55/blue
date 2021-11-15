@@ -14,11 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author: wangchao
- * @Date: 2021/4/2 9:38
+ * @date: 2021/4/2 9:38
  */
 @Service
 public class AdminUserCacheServiceImpl implements AdminUserCacheService {
@@ -108,23 +107,17 @@ public class AdminUserCacheServiceImpl implements AdminUserCacheService {
     @Override
     public void delResourceListByRoleId(Long roleId) {
         List<AdminRoleRelation> adminRoleRelationList = new AdminRoleRelation().selectList(Wrappers.<AdminRoleRelation>query().lambda().select(AdminRoleRelation::getAdminId).eq(AdminRoleRelation::getRoleId, roleId));
-        adminRoleRelationList.parallelStream().map(adminRoleRelation -> {
-            this.delResourceListByAdminId(adminRoleRelation.getAdminId());
-            return true;
-        }).collect(Collectors.toList());
+        adminRoleRelationList.forEach(adminRoleRelation -> this.delResourceListByAdminId(adminRoleRelation.getAdminId()));
 
     }
 
     /**
      * 当资源相关信息改变时清除该用户下资源列表
-     * @param resourceId
+     * @param resourceId 资源id
      */
     @Override
     public void delResourceListByResourceId(Long resourceId) {
         List<RoleResourceRelation> roleResourceRelationList = new RoleResourceRelation().selectList(Wrappers.<RoleResourceRelation>query().lambda().select(RoleResourceRelation::getRoleId));
-        roleResourceRelationList.parallelStream().map(roleResourceRelation -> {
-            this.delResourceListByRoleId(roleResourceRelation.getRoleId());
-            return true;
-        }).collect(Collectors.toList());
+        roleResourceRelationList.forEach(roleResourceRelation -> this.delResourceListByRoleId(roleResourceRelation.getRoleId()));
     }
 }
