@@ -1,6 +1,12 @@
 server:
-  port: 17010
+  port: 18010
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # 获取JWT验签公钥请求路径
+          jwk-set-uri: 'http://localhost:17010/rsa/publicKey'
   datasource:
     url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false
     username: root
