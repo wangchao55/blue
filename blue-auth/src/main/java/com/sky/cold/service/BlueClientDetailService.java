@@ -1,4 +1,4 @@
-package com.sky.cold.provider;
+package com.sky.cold.service;
 
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 
