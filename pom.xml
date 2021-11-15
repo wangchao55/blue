@@ -46,7 +46,6 @@
     <modules>
         <module>blue-common</module>
         <module>blue-admin</module>
-        <module>blue-security</module>
         <module>blue-gateway</module>
         <module>blue-auth</module>
     </modules>
@@ -172,11 +171,6 @@
             <dependency>
                 <groupId>com.sky.cold</groupId>
                 <artifactId>blue-common</artifactId>
-                <version>${pro.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sky.cold</groupId>
-                <artifactId>blue-security</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <!--spring cloud依赖-->
