@@ -6,6 +6,7 @@ import com.sky.cold.common.rest.responses.SuccessResponses;
 import com.sky.cold.constant.MessageConstant;
 import com.sky.cold.domain.SecurityUser;
 import com.sky.cold.feign.admin.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -23,13 +24,14 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2021-05-29 10:40 上午
  */
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    HttpServletRequest request;
 
-    @Autowired
-    AdminService adminService;
+    private final HttpServletRequest request;
+
+
+    private final AdminService adminService;
 
 
     /**

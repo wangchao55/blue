@@ -7,6 +7,7 @@ import com.sky.cold.entity.ResourceCategory;
 import com.sky.cold.service.ResourceCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +22,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/resourcecategory")
 @Api(tags = "资源分类表管理")
 public class ResourceCategoryController extends SuperController {
-    @Autowired
-    private ResourceCategoryService resourceCategoryService;
+
+    private final ResourceCategoryService resourceCategoryService;
 
     /**
      * 列表

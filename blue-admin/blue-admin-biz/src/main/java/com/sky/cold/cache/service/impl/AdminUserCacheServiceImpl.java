@@ -8,6 +8,7 @@ import com.sky.cold.entity.Admin;
 import com.sky.cold.entity.AdminRoleRelation;
 import com.sky.cold.entity.Resource;
 import com.sky.cold.entity.RoleResourceRelation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,10 @@ import java.util.List;
  * @date: 2021/4/2 9:38
  */
 @Service
+@RequiredArgsConstructor
 public class AdminUserCacheServiceImpl implements AdminUserCacheService {
 
-    @Autowired
-    RedisService redisService;
+    private final RedisService redisService;
 
     @Value("${redis.expire.common}")
     private Long REDIS_EXPIRE;

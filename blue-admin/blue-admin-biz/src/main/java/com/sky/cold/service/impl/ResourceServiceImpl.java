@@ -10,6 +10,7 @@ import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.ResourceDao;
 import com.sky.cold.entity.Resource;
 import com.sky.cold.service.ResourceService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,12 @@ import java.util.List;
 
 
 @Service("resourceService")
+@RequiredArgsConstructor
 public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> implements ResourceService {
 
 
-    @Autowired
-    AdminUserCacheService adminUserCacheService;
+
+    private final AdminUserCacheService adminUserCacheService;
 
 
     /**

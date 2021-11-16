@@ -6,6 +6,7 @@ import com.sky.cold.entity.MemberLevel;
 import com.sky.cold.service.MemberLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/memberlevel")
 @Api(tags = "会员等级表管理")
 public class MemberLevelController extends SuperController {
-    @Autowired
-    private MemberLevelService memberLevelService;
+
+    private final MemberLevelService memberLevelService;
 
     /**
      * 列表

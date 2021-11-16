@@ -21,6 +21,7 @@ import com.sky.cold.service.AdminService;
 import com.sky.cold.service.MenuService;
 import com.sky.cold.util.JWTTokenUtil;
 import com.sky.cold.vo.AdminPasswordVo;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ import java.util.stream.Stream;
 
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements AdminService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
@@ -55,29 +57,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements Ad
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
-    @Autowired
-    AdminDao adminDao;
-
-    @Autowired
-    AdminRoleRelationService adminRoleRelationService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    AdminUserCacheService adminUserCacheService;
-
-    @Autowired
-    RedisService redisService;
-
-    @Autowired
-    Producer producer;
-
-    @Autowired
-    MenuService menuService;
-
-    @Autowired
-    JWTTokenUtil jwtTokenUtil;
+    private final AdminRoleRelationService adminRoleRelationService;
+    private final PasswordEncoder passwordEncoder;
+    private final AdminUserCacheService adminUserCacheService;
+    private final RedisService redisService;
+    private final Producer producer;
+    private final JWTTokenUtil jwtTokenUtil;
 
     /**
      * 注册

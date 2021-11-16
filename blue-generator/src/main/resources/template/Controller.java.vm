@@ -22,11 +22,12 @@ import ${package}.${moduleName}.service.${className}Service;
  * @date ${datetime}
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${moduleName}/${pathName}")
 @Api(tags = "${comments}管理")
 public class ${className}Controller extends SuperController {
-    @Autowired
-    private ${className}Service ${classname}Service;
+
+    private final  ${className}Service ${classname}Service;
 
     /**
      * 列表

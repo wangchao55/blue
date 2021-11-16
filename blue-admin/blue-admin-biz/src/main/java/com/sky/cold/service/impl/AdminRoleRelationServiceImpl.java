@@ -7,6 +7,7 @@ import com.sky.cold.entity.AdminRoleRelation;
 import com.sky.cold.entity.Menu;
 import com.sky.cold.entity.Resource;
 import com.sky.cold.service.AdminRoleRelationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,11 @@ import java.util.List;
 
 
 @Service("adminRoleRelationService")
+@RequiredArgsConstructor
 public class AdminRoleRelationServiceImpl extends ServiceImpl<AdminRoleRelationDao, AdminRoleRelation> implements AdminRoleRelationService {
 
-    @Autowired
-    AdminRoleRelationDao adminRoleRelationDao;
+
+    private final AdminRoleRelationDao adminRoleRelationDao;
 
 
     /**

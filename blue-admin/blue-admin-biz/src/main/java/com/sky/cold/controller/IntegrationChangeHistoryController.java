@@ -6,6 +6,7 @@ import com.sky.cold.entity.IntegrationChangeHistory;
 import com.sky.cold.service.IntegrationChangeHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/integrationchangehistory")
 @Api(tags = "积分变化历史记录表管理")
 public class IntegrationChangeHistoryController extends SuperController {
-    @Autowired
-    private IntegrationChangeHistoryService integrationChangeHistoryService;
+
+    private final IntegrationChangeHistoryService integrationChangeHistoryService;
 
     /**
      * 列表

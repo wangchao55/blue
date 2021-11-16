@@ -7,6 +7,7 @@ import com.sky.cold.entity.Resource;
 import com.sky.cold.service.ResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.List;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/resource")
 @Api(tags = "后台资源表管理")
 public class ResourceController extends SuperController {
-    @Autowired
-    private ResourceService resourceService;
+
+    private final ResourceService resourceService;
 
     /**
      * 列表

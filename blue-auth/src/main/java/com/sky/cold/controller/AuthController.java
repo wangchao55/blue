@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
@@ -24,12 +25,13 @@ import java.util.Map;
  * Created by macro on 2020/7/17.
  */
 @RestController
+@RequiredArgsConstructor
 @Api(tags = "认证中心Oauth2")
 @RequestMapping("/oauth")
 public class AuthController extends SuperController {
 
-    @Autowired
-    private TokenEndpoint tokenEndpoint;
+
+    private final TokenEndpoint tokenEndpoint;
 
 
     /**

@@ -6,6 +6,7 @@ import com.sky.cold.entity.MemberRuleSetting;
 import com.sky.cold.service.MemberRuleSettingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/memberrulesetting")
 @Api(tags = "会员积分成长规则表管理")
 public class MemberRuleSettingController extends SuperController {
-    @Autowired
-    private MemberRuleSettingService memberRuleSettingService;
+
+    private final MemberRuleSettingService memberRuleSettingService;
 
     /**
      * 列表

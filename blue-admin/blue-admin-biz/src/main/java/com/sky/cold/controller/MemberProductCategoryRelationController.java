@@ -6,6 +6,7 @@ import com.sky.cold.entity.MemberProductCategoryRelation;
 import com.sky.cold.service.MemberProductCategoryRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/memberproductcategoryrelation")
 @Api(tags = "会员与产品分类关系表（用户喜欢的分类）管理")
 public class MemberProductCategoryRelationController extends SuperController {
-    @Autowired
-    private MemberProductCategoryRelationService memberProductCategoryRelationService;
+
+    private final MemberProductCategoryRelationService memberProductCategoryRelationService;
 
     /**
      * 列表

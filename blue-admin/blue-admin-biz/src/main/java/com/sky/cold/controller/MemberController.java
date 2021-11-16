@@ -6,6 +6,7 @@ import com.sky.cold.entity.Member;
 import com.sky.cold.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/member")
 @Api(tags = "会员表管理")
 public class MemberController extends SuperController {
-    @Autowired
-    private MemberService memberService;
+
+    private final MemberService memberService;
 
     /**
      * 列表

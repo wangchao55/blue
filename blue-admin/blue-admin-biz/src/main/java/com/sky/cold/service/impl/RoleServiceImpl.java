@@ -11,6 +11,7 @@ import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.RoleDao;
 import com.sky.cold.entity.*;
 import com.sky.cold.service.RoleService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,13 @@ import java.util.stream.Stream;
 
 
 @Service("roleService")
+@RequiredArgsConstructor
 public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
 
-    @Autowired
-    AdminUserCacheService adminUserCacheService;
+
+    private final AdminUserCacheService adminUserCacheService;
 
     /**
      * 新增角色信息

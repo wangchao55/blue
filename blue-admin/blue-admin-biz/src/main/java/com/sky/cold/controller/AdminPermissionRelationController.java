@@ -6,6 +6,7 @@ import com.sky.cold.entity.AdminPermissionRelation;
 import com.sky.cold.service.AdminPermissionRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,12 @@ import java.util.Map;
  * @date 2021-04-01 09:53:25
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin/adminpermissionrelation")
 @Api(tags = "后台用户和权限关系表(除角色中定义的权限以外的加减权限)管理")
 public class AdminPermissionRelationController extends SuperController {
-    @Autowired
-    private AdminPermissionRelationService adminPermissionRelationService;
+
+    private final AdminPermissionRelationService adminPermissionRelationService;
 
     /**
      * 列表

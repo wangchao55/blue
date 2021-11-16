@@ -12,6 +12,7 @@ import com.sky.cold.util.SecurityUtil;
 import com.sky.cold.vo.AdminPasswordVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -32,15 +33,14 @@ import java.util.Map;
  * @date 2021-03-30 16:54:44
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 @Api(tags = "后台用户管理")
 public class AdminController extends SuperController {
 
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
 
-    @Autowired
-    SecurityUtil securityUtil;
+    private final SecurityUtil securityUtil;
 
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;

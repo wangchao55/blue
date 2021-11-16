@@ -6,6 +6,7 @@ import com.sky.cold.common.rest.controller.SuperController;
 import com.sky.cold.common.rest.responses.SuccessResponses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,13 @@ import java.util.Map;
  * Created by wangchao on 2020/6/19.
  */
 @RestController
+@RequiredArgsConstructor
 @Api(tags = "RSA加密")
 @RequestMapping("/rsa")
 public class KeyPairController extends SuperController {
 
-    @Autowired
-    private KeyPair keyPair;
+
+    private final KeyPair keyPair;
 
     @GetMapping("/publicKey")
     @ApiOperation(value = "获取RSA公钥接口")
