@@ -2,7 +2,6 @@ package com.sky.cold.common.service.impl;
 
 import com.sky.cold.common.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
