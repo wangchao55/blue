@@ -9,7 +9,6 @@ import com.sky.cold.entity.AdminRoleRelation;
 import com.sky.cold.entity.Resource;
 import com.sky.cold.entity.RoleResourceRelation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
