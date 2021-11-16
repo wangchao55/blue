@@ -33,6 +33,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,12 +54,12 @@ import java.util.stream.Stream;
 public class AdminServiceImpl extends ServiceImpl<AdminDao, Admin> implements AdminService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
     private final AdminRoleRelationService adminRoleRelationService;
-    private final PasswordEncoder passwordEncoder;
     private final AdminUserCacheService adminUserCacheService;
     private final RedisService redisService;
     private final Producer producer;
