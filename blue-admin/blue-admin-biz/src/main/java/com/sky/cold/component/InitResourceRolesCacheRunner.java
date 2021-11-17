@@ -1,8 +1,8 @@
 package com.sky.cold.component;
 
 import com.sky.cold.service.ResourceService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@AllArgsConstructor
 public class InitResourceRolesCacheRunner implements CommandLineRunner {
 
-    private final ResourceService resourceService;
+    @Autowired
+    ResourceService resourceService;
 
     /**
      * CommandLineRunner项目启动初始化角色资源

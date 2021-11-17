@@ -27,15 +27,16 @@ import java.util.stream.Collectors;
 
 
 @Service("resourceService")
-@RequiredArgsConstructor
 public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> implements ResourceService {
 
-
-
-    private final AdminUserCacheService adminUserCacheService;
-    private final RoleService roleService;
-    private final RoleResourceRelationService roleResourceRelationService;
-    private final RedisService redisService;
+    @Autowired
+    AdminUserCacheService adminUserCacheService;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    RoleResourceRelationService roleResourceRelationService;
+    @Autowired
+    RedisService redisService;
 
 
     /**
@@ -121,6 +122,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
         }
         redisService.del(AuthConstant.RESOURCE_ROLES_MAP_KEY);
         redisService.hSetAll(AuthConstant.RESOURCE_ROLES_MAP_KEY, resourceRoleMap);
+        System.out.println(resourceRoleMap);
     }
 
 
