@@ -5,19 +5,25 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.cold.cache.service.AdminUserCacheService;
+import com.sky.cold.common.constant.AuthConstant;
 import com.sky.cold.common.enums.ErrorCodeEnum;
+import com.sky.cold.common.service.RedisService;
 import com.sky.cold.common.util.ApiAssert;
 import com.sky.cold.dao.ResourceDao;
 import com.sky.cold.entity.Resource;
+import com.sky.cold.entity.Role;
+import com.sky.cold.entity.RoleResourceRelation;
 import com.sky.cold.service.ResourceService;
+import com.sky.cold.service.RoleResourceRelationService;
+import com.sky.cold.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service("resourceService")
@@ -27,6 +33,9 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
 
 
     private final AdminUserCacheService adminUserCacheService;
+    private final RoleService roleService;
+    private final RoleResourceRelationService roleResourceRelationService;
+    private final RedisService redisService;
 
 
     /**
@@ -60,7 +69,9 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
         Resource info = new Resource().selectOne(Wrappers.<Resource>query().lambda().eq(Resource::getName, resource.getName()));
         ApiAssert.isNull(ErrorCodeEnum.RESOURCE_ALREADY_EXISTS,info);
         resource.setCreateTime(new Date());
-        return resource.insert();
+        boolean flag = resource.insert();
+        initResourceRolesMap();
+        return flag;
     }
 
     /**
@@ -69,7 +80,9 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
     @Override
     public Boolean updateResourceInfo(Resource resource) {
         adminUserCacheService.delResourceListByResourceId(resource.getId());
-        return resource.updateById();
+        boolean flag = resource.updateById();
+        initResourceRolesMap();
+        return flag;
     }
 
 
@@ -79,7 +92,9 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
     @Override
     public Boolean deleteResourceInfo(Long id) {
         adminUserCacheService.delResourceListByResourceId(id);
-        return new Resource().deleteById(id);
+        boolean flag = this.removeById(id);
+        initResourceRolesMap();
+        return flag;
     }
 
     /**
@@ -88,6 +103,24 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceDao, Resource> impl
     @Override
     public List<Resource> getResourceListAll() {
         return new Resource().selectList(Wrappers.<Resource>query().lambda());
+    }
+
+    /**
+     * 初始化资源角色关联
+     */
+    @Override
+    public void initResourceRolesMap() {
+        Map<String, List<String>> resourceRoleMap = new TreeMap<>();
+        List<Resource> resourceList = this.list();
+        List<Role> roleList = roleService.list();
+        List<RoleResourceRelation> roleResourceRelationList = roleResourceRelationService.list();
+        for (Resource resource : resourceList) {
+            Set<Long> roleIds = roleResourceRelationList.stream().filter(item -> item.getResourceId().equals(resource.getId())).map(RoleResourceRelation::getRoleId).collect(Collectors.toSet());
+            List<String> roleNames = roleList.stream().filter(item -> roleIds.contains(item.getId())).map(item -> item.getId() + "_" + item.getName()).collect(Collectors.toList());
+            resourceRoleMap.put(resource.getUrl(),roleNames);
+        }
+        redisService.del(AuthConstant.RESOURCE_ROLES_MAP_KEY);
+        redisService.hSetAll(AuthConstant.RESOURCE_ROLES_MAP_KEY, resourceRoleMap);
     }
 
 
