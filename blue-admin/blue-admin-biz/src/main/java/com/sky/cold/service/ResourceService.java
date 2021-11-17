@@ -28,5 +28,7 @@ public interface ResourceService extends IService<Resource> {
 
     List<Resource> getResourceListAll();
 
+    void initResourceRolesMap();
+
 }
 
